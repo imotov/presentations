@@ -43,6 +43,29 @@ section.has-dark-background {
 	}
 }
 
+// elasticsearch logo
+div.footer-left {
+  position: absolute;
+  bottom: 5px;
+  left: 20px;
+}
+
+div.footer-right {
+  position: absolute;
+  bottom: 15px;
+  right: 30%;
+  font-size: 12px;
+}
+
+// remove bottom left logo if background is present
+html.eslogo div.footer-right, html.eslogo div.footer-left {
+  visibility: hidden;
+}
+
+html.eslogo div.slide-background.present {
+  background-position: left bottom;
+  background-size: auto 90%;
+}
 
 // Theme template ------------------------------
 @import "../template/theme";
