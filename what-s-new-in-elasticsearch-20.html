@@ -52,7 +52,7 @@
                 <h3>About Me</h3>
                 <ul>
                     <li>Software Developer at Elastic</li>
-                    <li>Joined Elastic (back then Elasticsearch Inc): Oct 2012</li>
+                    <li>Joined: Oct 2012</li>
                     <li>Elasticsearch contributor since Apr 2011</li>
                 </ul>
             </section>
@@ -60,13 +60,15 @@
                 <h3>About Elastic</h3>
                 <ul>
                     <li>Founded: July 2012</li>
+                    <li>Renamed Elasticsearch → Elastic: Mar 2015</li>
                     <li>Headquaters: Amsterdam and Mountain View, CA</li>
-                    <li>Develops Elasticsearch, Logstash, Kibana</li>
+                    <li>Develops Elasticsearch, Logstash, Kibana, Beats</li>
                     <li>Provides:
                         <ul>
                             <li>Training (public and onsite)</li>
                             <li>Development and production support</li>
-                            <li>Hosted Elasticsearch</li>
+                            <li>Hosted Elasticsearch (Found)</li>
+                            <li>Commercial plugins: Marvel, Shield, Watcher</li>
                         </ul>
                     </li>
                 </ul>
@@ -112,7 +114,7 @@
             <section>
                 <h3>What’s NOT in Elasticsearch 2.0</h3>
                 <ul>
-                    <li class="fragment">Rivers<span class="fragment"><i> - use logstash</i></span></li>
+                    <li class="fragment">Rivers<span class="fragment"><i> - use logstash or invest into your own ingestion layer</i></span></li>
                     <li class="fragment">Facets<span class="fragment"><i> - replaced by aggregations</i></span></li>
                     <li class="fragment">_shutdown API<span class="fragment"><i> - use platform specific services</i></span></li>
                     <li class="fragment">Support for Thrift and Memcached protocols</li>
@@ -165,12 +167,12 @@
   "mappings": {
     "type_one": {
       "properties": {
-        "name": { "type": "string" }
+        "name": { "type": "string" }                         &#x2776;
       }
     },
     "type_two": {
       "properties": {
-        "name": { "type": "string", "analyzer": "english" }
+        "name": { "type": "string", "analyzer": "english" }  &#x2777;
       }
     }
   }
@@ -180,30 +182,49 @@
                 </aside>
             </section>
             <section>
-                <h3>Fields cannot be referenced by a short name</h3>
+                <h3>Ambiguous field lookup before 2.0</h3>
                 <pre><code class="json">PUT my_index
 {
   "mappings": {
-    "my_type": {
+    "name": {                             &#x2776;
       "properties": {
-        "title":     { "type": "string" },
-        "name": {
+        "title": { "type": "string" },    &#x2777;
+        "name": {                         &#x2778;
           "properties": {
-            "title": { "type": "string" },
-            "first": { "type": "string" },
-            "last":  { "type": "string" }
+            "title": { "type": "string" } &#x2779;
           }
         }
       }
     }
   }
 }</code></pre>
-                <p>In 2.0 "<code>title</code>" and "<code>name.title</code>" have to be used.</p>
-                <p>Type name prefix "<code>my_type.title</code> has been removed.</p>
-                <aside class="notes">
-                    This was acceptable before 2.0 but was producing unexpected results. In 2.0 this mapping is no longer valid.
-                </aside>
+                <p>What does <code>title</code> refer to?</p>
+                <p class="fragment">What about <code>name.title</code>?</p>
+                <p class="fragment">What about <code>name.name.title</code>?</p>
             </section>
+
+            <section>
+                <h3>Field lookup in 2.0</h3>
+                <pre><code class="json">PUT my_index
+{
+  "mappings": {
+    "name": {                             &#x2776;
+      "properties": {
+        "title": { "type": "string" },    &#x2777;
+        "name": {                         &#x2778;
+          "properties": {
+            "title": { "type": "string" } &#x2779;
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+                <p>"<code>title</code>" always refers to &#x2777;</p>
+                <p>"<code>name.title</code>" always refers to &#x2779;</p>
+                <p>"<code>name.name.title</code>" is invalid</p>
+            </section>
+
 
             <section>
                 <h3>Field analyzer</h3>
@@ -212,11 +233,15 @@
   "mappings": {
     "my_type": {
       "properties": {
-        "title":     { "type": "string", "analyzer": "my_analyzer }
+        "title": { "type": "string", "analyzer": "my_analyzer }
       }
     }
   }
 }</code></pre>
+                <aside class="notes">
+                    There are some changes in how field-specific analyzer is now set. This format, which sets both
+                    search and index analyzers is still acceptable in 2.0.
+                </aside>
             </section>
 
             <section>
@@ -232,6 +257,9 @@
                     <li><code>analyzer</code> - sets <b>index</b> and <b>search</b> analyzers</li>
                     <li><code>search_analyzer</code> - overrides <b>search</b> analyzer</li>
                 </ul>
+                <aside class="notes">
+                    But if you want different analyzers - there are some changes.
+                </aside>
             </section>
 
             <section>
@@ -297,21 +325,37 @@
 
             <section>
                 <h3>Two-phase execution</h3>
-                <ul>
-                    <li>
-                        Two phases:
-                        <dl>
-                            <dt>Approximation phase</dt>
-                            <dd>quickly iterates over a superset of the matching documents</dd>
-                            <dt>Verification phase</dt>
-                            <dd>check if a document in this superset actually matches the query</dd>
-                        </dl>
+                <dl>
+                    <dt>Approximation phase</dt>
+                    <dd>quickly iterates over a superset of the matching documents</dd>
+                    <dt>Verification phase</dt>
+                    <dd>check if a document in this superset actually matches the query</dd>
+                </dl>
 
-                    </li>
-                    <li>Example: searching for <code>"quick fox"</code></li>
-                </ul>
+            </section>
+            <section>
+                <h3>Two-phase execution - how is this useful?</h3>
+                <pre><code class="json">{
+  "bool" : {
+    "must": [{
+      "match_phrase": {
+        "body": "quick fox"  &#x2776;
+      }, {
+      "match_phrase": {
+        "body": "brown dog"  &#x2777;
+      }
+    }]
+  }
+}</code></pre>
+                <p>Instead of loading posting list for all documents that contain quick and fox or brown and dog, we only load postings for the documents that contain all 4 terms.</p>
                 <aside class="notes">
-                    Why is it useful? Imagine that you are searching for “quick fox” and applying a filter as well. The fact that we can dissociate the approximation from the verification phase allows us to first intersect the approximation with the filter, so that we will verify positions on a smaller set of documents. This two-phase iteration pattern also applies to other queries: for instance geo-distance queries can use a bounding box as an approximation and a distance computation as a verification, and filters that only make sense in a random-access fashion such as the script filter can return all documents in the index as an approximation and run the script as a verification.
+                    Why is it useful? Imagine that you are searching for "quick fox" and "brown dog". The fact that we
+                    can dissociate the approximation from the verification phase allows us to first intersect two
+                    approximations, so that we will verify positions on a smaller set of documents.
+                    This two-phase iteration pattern also applies to other queries: for instance geo-distance queries
+                    can use a bounding box as an approximation and a distance computation as a verification, and filters
+                    that only make sense in a random-access fashion such as the script filter can return all documents in
+                    the index as an approximation and run the script as a verification.
                 </aside>
             </section>
 
@@ -372,18 +416,22 @@
                 </ul>
             </section>
             <section>
+                <h3>Multiple data path striping</h3>
+                <img src="images/striping0.png">
+            </section>
+            <section>
+                <h3>Before 2.0</h3>
+                <img src="images/striping1.png">
+            </section>
+            <section>
+                <h3>After 2.0</h3>
+                <img src="images/striping2.png">
+            </section>
+            <section>
                 <h3>Cluster State Diffs</h3>
                 <ul>
                     <li>Before entire cluster state was shipped on every change to every node</li>
                     <li>Starting with 2.0 only changes are sent</li>
-                </ul>
-            </section>
-            <section>
-                <h3>Some cool recent reliability changes that you might have missed</h3>
-                <ul>
-                    <li>Sync-flush (1.6)</li>
-                    <li>Async shard allocation (1.6)</li>
-                    <li>Better handling of node leave/rejoin (1.7)</li>
                 </ul>
             </section>
             <section>
@@ -403,7 +451,14 @@
                     <li>Only for indices created with 2.0</li>
                 </ul>
             </section>
-
+            <section>
+                <h3>Some cool recent reliability changes that you might have missed</h3>
+                <ul>
+                    <li>Sync-flush (1.6)</li>
+                    <li>Async shard allocation (1.6)</li>
+                    <li>Better handling of node leave/rejoin (1.7)</li>
+                </ul>
+            </section>
         </section>
 
         <section>
@@ -421,6 +476,7 @@
                     <li>Time-series math</li>
                 </ul>
                 <aside class="notes">
+                    We might do another presentation devoted to new agg features.
                     See <a href="https://www.elastic.co/blog/out-of-this-world-aggregations">this blog post for details</a>
                 </aside>
             </section>
@@ -463,23 +519,63 @@
                     <li><a href="https://discuss.elastic.co/">https://discuss.elastic.co/</a> - Discussion Forums</li>
                     <li><a href="https://github.com/elastic/elasticsearch">https://github.com/elastic/elasticsearch</a> - Report issues</li>
                     <li>IRC on Freenode - #elasticsearch</li>
+                    <li><a href="http://stackoverflow.com/questions/tagged/elasticsearch">http://stackoverflow.com/questions/tagged/elasticsearch</a></li>
                 </ul>
+                <aside class="notes">
+                    Stackoverflow - good for general questions, not so good for online troubleshooting
+                    </ul>
+                </aside>
             </section>
-
 
         </section>
 
+        <section>
+            <section>
+                <h3>elastic{ON} TOUR</h3>
+                <ul>
+                    <li>Washington, D.C. - Oct 6</li>
+                    <!--<li>Amsterdam - Oct 29</li>-->
+                    <!--<li>London - Nov 3</li>-->
+                    <!--<li>Paris - Nov 5</li>-->
+                    <!--<li>München - Nov 10</li>-->
+                    <li>New York - Nov 17</li>
+                    <li>Chicago - Nov 19</li>
+                    <li>Los Angeles - Dec 1</li>
+                    <li>Seattle - Dec 3</li>
+                    <!--<li>Sydney - Dec 8</li>-->
+                    <!--<li>Melbourne - Dec 10</li>-->
+                    <!--<li>Tokyo - Dec 16</li>-->
+                </ul>
+
+            </section>
+            <section>
+                <h3>elastic{ON} <sup>'16</sup></h3>
+                <ul>
+                    <li>Feb 17-19, 2016</li>
+                    <li>Pier 48, San Francisco, CA</li>
+                    <li>Last year, Elastic{ON} sold out in just one week.</li>
+                    <li><a href="https://www.elastic.co/elasticon">https://www.elastic.co/elasticon</a></li>
+                </ul>
+
+            </section>
+        </section>
 
         <section style="text-align: left;">
             <h1>THE END</h1>
-            <p>
-                - Slides: <a href="https://imotov.github.io/presentations">https://imotov.github.io/presentations</a> <br>
-            </p>
+            <ul>
+                <li>Slides: <a href="https://imotov.github.io/presentations">https://imotov.github.io/presentations</a></li>
+                <li>Twitter: <a href="https://twitter.com/imotov">@imotov</a></li>
+
+            </ul>
         </section>
 
     </div>
     <div class="footer-left"><img src="images/elastic.png"></div>
-    <div class="footer-right">Copyright Elastic 2015 Copying, publishing and/or <br>distributing without written permission is strictly prohibited</div>
+    <div class="footer-site">www.elastic.co</div>
+    <div class="footer-middle"><img src="images/pagenumber.png"></div>
+    <div class="footer-copy">CC-BY-ND 4.0</div>
+    <hr class="footer-left">
+    <hr class="footer-right">
 </div>
 
 <script src="lib/js/head.min.js"></script>

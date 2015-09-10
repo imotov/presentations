@@ -7,18 +7,73 @@
 section.has-dark-background, section.has-dark-background h1, section.has-dark-background h2, section.has-dark-background h3, section.has-dark-background h4, section.has-dark-background h5, section.has-dark-background h6 {
   color: #fff; }
 
+.hl {
+  color: red; }
+
+.reveal .slide-number {
+  position: fixed;
+  display: block;
+  bottom: 35px;
+  opacity: 0.5;
+  z-index: 31;
+  font-size: 12px;
+  left: 50%;
+  margin-left: 5px;
+  color: black; }
+
 div.footer-left {
   position: absolute;
   bottom: 5px;
   left: 20px; }
 
-div.footer-right {
+div.footer-site {
   position: absolute;
-  bottom: 15px;
-  right: 30%;
-  font-size: 12px; }
+  bottom: 20px;
+  right: 50%;
+  margin-right: 100px;
+  font-size: 14px; }
 
-html.eslogo div.footer-right, html.eslogo div.footer-left {
+div.footer-copy {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  margin-left: 100px;
+  font-size: 14px; }
+
+@media (max-width: 600px) {
+  .footer-copy {
+    display: none; } }
+
+@media (max-width: 600px) {
+  .footer-site {
+    display: none; } }
+
+div.footer-middle {
+  position: absolute;
+  bottom: -5px;
+  margin: 0 auto;
+  text-align: center;
+  width: 40%;
+  left: 0;
+  right: 0; }
+
+hr.footer-left {
+  margin-right: 60px;
+  margin-left: 50px;
+  right: 50%;
+  left: 0;
+  position: absolute;
+  bottom: 30px; }
+
+hr.footer-right {
+  margin-right: 150px;
+  margin-left: 60px;
+  left: 50%;
+  right: 0;
+  position: absolute;
+  bottom: 30px; }
+
+html.eslogo div.footer-right, html.eslogo div.footer-left, html.eslogo hr.footer-left, html.eslogo hr.footer-right, html.eslogo div.footer-middle, html.eslogo div.footer-copy, html.eslogo .slide-number {
   visibility: hidden; }
 
 html.eslogo div.slide-background.present {
