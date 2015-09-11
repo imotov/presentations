@@ -363,10 +363,10 @@
                 <h3>Query Caching</h3>
                 <ul>
                     <li>Fully automatic</li>
-                    <li>Keeps track of 256 most recently used filters</li>
+                    <li>Keeps track of 256 most recently used queries</li>
                     <li>Only caches those that appear 5 times or more</li>
                     <li>Does not cache segments which have less than 10000 documents or 3% of the documents of the index</li>
-                    <li>More efficient filter cache (roaring bitmaps)</li>
+                    <li>More efficient query cache (roaring bitmaps)</li>
                     <li>Non-scoring components are cache-able</li>
                 </ul>
             </section>
@@ -501,6 +501,7 @@
                 <ul>
                     <li>No rolling upgrades</li>
                     <li>One way - no way to downgrade back to 1.x</li>
+                    <li>Make sure you have a backup</li>
                     <li>Test it! Don't try to "wing it" in production.</li>
                 </ul>
                 <img src="images/danger.jpg" alt="danger">
