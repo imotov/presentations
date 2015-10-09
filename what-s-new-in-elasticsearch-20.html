@@ -511,14 +511,36 @@
                 <img src="images/plugins.jpg" alt="plugins">
             </section>
             <section>
+                <pre><code class="shell">$ mvn clean install</code></pre>
+                <pre><code class="shell">[INFO] Plugin: Analysis: ICU .............................. SUCCESS
+[INFO] Plugin: Analysis: Japanese (kuromoji) .............. SUCCESS
+[INFO] Plugin: Analysis: Phonetic ......................... SUCCESS
+[INFO] Plugin: Analysis: Smart Chinese (smartcn) .......... SUCCESS
+[INFO] Plugin: Analysis: Polish (stempel) ................. SUCCESS
+[INFO] Plugin: Delete By Query ............................ SUCCESS
+[INFO] Plugin: Discovery: Azure ........................... SUCCESS
+[INFO] Plugin: Discovery: EC2 ............................. SUCCESS
+[INFO] Plugin: Discovery: Google Compute Engine ........... SUCCESS
+[INFO] Plugin: Discovery: Multicast ....................... SUCCESS
+[INFO] Plugin: Language: Expression ....................... SUCCESS
+[INFO] Plugin: Language: Groovy ........................... SUCCESS
+[INFO] Plugin: Language: JavaScript ....................... SUCCESS
+[INFO] Plugin: Language: Python ........................... SUCCESS
+[INFO] Plugin: Mapper: Murmur3 ............................ SUCCESS
+[INFO] Plugin: Mapper: Size ............................... SUCCESS
+[INFO] Plugin: Repository: Azure .......................... SUCCESS
+[INFO] Plugin: Repository: S3 ............................. SUCCESS
+[INFO] Plugin: Store: SMB ................................. SUCCESS</code></pre>
+            </section>
+            <section>
                 <h3>Before 2.0</h3>
                 <pre><code class="shell">$ bin/plugin install elasticsearch/cloud-aws/2.7.2
-$ bin/plugin install cloud-aws --url http://path.to/cloud-aws-2.7.2.zip
-$ bin/plugin install cloud-aws --url file:path/to/cloud-aws-2.7.2.zip</code></pre>
+$ bin/plugin install cloud-aws --url http://p.to/cloud-aws-2.7.2.zip
+$ bin/plugin install cloud-aws --url file:p/to/cloud-aws-2.7.2.zip</code></pre>
                 <h3>Starting with 2.0</h3>
                 <pre><code class="shell">$ bin/plugin install cloud-aws
-$ bin/plugin install http://path.to/cloud-aws-2.7.2.zip
-$ bin/plugin install file:path/to/cloud-aws-2.7.2.zip</code></pre>
+$ bin/plugin install http://p.to/cloud-aws-2.7.2.zip
+$ bin/plugin install file:p/to/cloud-aws-2.7.2.zip</code></pre>
             </section>
         </section>
 
