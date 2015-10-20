@@ -101,6 +101,7 @@
                     <li>Security</li>
                     <li>Resiliency</li>
                     <li>Features</li>
+                    <li>Plugins</li>
                 </ul>
             </section>
         </section>
@@ -391,6 +392,7 @@
                 <ul>
                     <li>Prevents outside access outside of elasticsearch even if elasticsearch process is compromised</li>
                     <li>All resources that elasticsearch can access are defined on node startup</li>
+                    <li>Some libs/plugins are unsecured!</li>
                 </ul>
             </section>
         </section>
@@ -454,9 +456,9 @@
             <section>
                 <h3>Some cool recent reliability changes that you might have missed</h3>
                 <ul>
-                    <li>Sync-flush (1.6)</li>
-                    <li>Async shard allocation (1.6)</li>
-                    <li>Better handling of node leave/rejoin (1.7)</li>
+                    <li>Sync-flush with <code>sync_id</code> (1.6)</li>
+                    <li>Async shard allocation (1.6) <i>was blocking cluster state</i></li>
+                    <li>Better handling of node leave/rejoin (1.7) <i>wait for one minute</i></li>
                 </ul>
             </section>
         </section>
@@ -480,6 +482,18 @@
                     See <a href="https://www.elastic.co/blog/out-of-this-world-aggregations">this blog post for details</a>
                 </aside>
             </section>
+            <section>
+                <h3>Moving average - 10</h3>
+                <img src="images/movavg_10window.png" alt="Moving average">
+            </section>
+            <section>
+                <h3>Moving average - 100</h3>
+                <img src="images/movavg_100window.png" alt="Moving average">
+            </section>
+            <section>
+                <h3>Holt Winters - seasonal fluctuations</h3>
+                <img src="images/triple_prediction.png" alt="Holt Winters">
+            </section>
 
             <section>
                 <h3>Index compression</h3>
@@ -488,6 +502,23 @@
                     <li>Some indexing/merging impact</li>
                     <li>Dynamic setting - could be set before optimization for time-based indices</li>
                 </ul>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>Plugins</h2>
+                <img src="images/plugins.jpg" alt="plugins">
+            </section>
+            <section>
+                <h3>Before 2.0</h3>
+                <pre><code class="shell">$ bin/plugin install elasticsearch/cloud-aws/2.7.2
+$ bin/plugin install cloud-aws --url http://path.to/cloud-aws-2.7.2.zip
+$ bin/plugin install cloud-aws --url file:path/to/cloud-aws-2.7.2.zip</code></pre>
+                <h3>Starting with 2.0</h3>
+                <pre><code class="shell">$ bin/plugin install cloud-aws
+$ bin/plugin install http://path.to/cloud-aws-2.7.2.zip
+$ bin/plugin install file:path/to/cloud-aws-2.7.2.zip</code></pre>
             </section>
         </section>
 
@@ -517,10 +548,10 @@
             <section>
                 <h3>Getting help</h3>
                 <ul>
-                    <li><a href="https://discuss.elastic.co/">https://discuss.elastic.co/</a> - Discussion Forums</li>
-                    <li><a href="https://github.com/elastic/elasticsearch">https://github.com/elastic/elasticsearch</a> - Report issues</li>
+                    <li><a href="https://discuss.elastic.co/" target="_blank">https://discuss.elastic.co/</a> - Discussion Forums</li>
+                    <li><a href="https://github.com/elastic/elasticsearch" target="_blank">https://github.com/elastic/elasticsearch</a> - Report issues</li>
                     <li>IRC on Freenode - #elasticsearch</li>
-                    <li><a href="http://stackoverflow.com/questions/tagged/elasticsearch">http://stackoverflow.com/questions/tagged/elasticsearch</a></li>
+                    <li><a href="http://stackoverflow.com/questions/tagged/elasticsearch" target="_blank">http://stackoverflow.com/questions/tagged/elasticsearch</a></li>
                 </ul>
                 <aside class="notes">
                     Stackoverflow - good for general questions, not so good for online troubleshooting
@@ -534,18 +565,17 @@
             <section>
                 <h3>elastic{ON} TOUR</h3>
                 <ul>
-                    <li>Washington, D.C. - Oct 6</li>
-                    <!--<li>Amsterdam - Oct 29</li>-->
-                    <!--<li>London - Nov 3</li>-->
-                    <!--<li>Paris - Nov 5</li>-->
-                    <!--<li>München - Nov 10</li>-->
+                    <li>Amsterdam - Oct 29</li>
+                    <li>London - Nov 3</li>
+                    <li>Paris - Nov 5</li>
+                    <li>München - Nov 10</li>
                     <li>New York - Nov 17</li>
                     <li>Chicago - Nov 19</li>
                     <li>Los Angeles - Dec 1</li>
                     <li>Seattle - Dec 3</li>
-                    <!--<li>Sydney - Dec 8</li>-->
-                    <!--<li>Melbourne - Dec 10</li>-->
-                    <!--<li>Tokyo - Dec 16</li>-->
+                    <li>Sydney - Dec 8</li>
+                    <li>Melbourne - Dec 10</li>
+                    <li>Tokyo - Dec 16</li>
                 </ul>
 
             </section>
@@ -555,7 +585,7 @@
                     <li>Feb 17-19, 2016</li>
                     <li>Pier 48, San Francisco, CA</li>
                     <li>Last year, Elastic{ON} sold out in just one week.</li>
-                    <li><a href="https://www.elastic.co/elasticon">https://www.elastic.co/elasticon</a></li>
+                    <li><a href="https://www.elastic.co/elasticon" target="_blank">https://www.elastic.co/elasticon</a></li>
                 </ul>
 
             </section>
@@ -564,9 +594,8 @@
         <section style="text-align: left;">
             <h1>THE END</h1>
             <ul>
-                <li>Slides: <a href="https://imotov.github.io/presentations">https://imotov.github.io/presentations</a></li>
-                <li>Twitter: <a href="https://twitter.com/imotov">@imotov</a></li>
-
+                <li>Slides: <a href="https://imotov.github.io/presentations" target="_blank">https://imotov.github.io/presentations</a></li>
+                <li>Twitter: <a href="https://twitter.com/imotov" target="_blank">@imotov</a></li>
             </ul>
         </section>
 
