@@ -179,10 +179,11 @@ Reveal.initialize({
 	// Parallax background size
 	parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
 
-	// Amount to move parallax background (horizontal and vertical) on slide change
-	// Number, e.g. 100
-	parallaxBackgroundHorizontal: '',
-	parallaxBackgroundVertical: ''
+	// Number of pixels to move the parallax background per slide
+	// - Calculated automatically unless specified
+	// - Set to 0 to disable movement along an axis
+	parallaxBackgroundHorizontal: null,
+	parallaxBackgroundVertical: null
 
 });
 ```
@@ -196,56 +197,6 @@ Reveal.configure({ autoSlide: 0 });
 
 // Start auto-sliding every 5s
 Reveal.configure({ autoSlide: 5000 });
-```
-
-
-### Dependencies
-
-Reveal.js doesn't _rely_ on any third party scripts to work but a few optional libraries are included by default. These libraries are loaded as dependencies in the order they appear, for example:
-
-```javascript
-Reveal.initialize({
-	dependencies: [
-		// Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
-		{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-
-		// Interpret Markdown in <section> elements
-		{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-		{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-
-		// Syntax highlight for <code> elements
-		{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-
-		// Zoom in and out with Alt+click
-		{ src: 'plugin/zoom-js/zoom.js', async: true },
-
-		// Speaker notes
-		{ src: 'plugin/notes/notes.js', async: true },
-
-		// Remote control your reveal.js presentation using a touch device
-		{ src: 'plugin/remotes/remotes.js', async: true },
-
-		// MathJax
-		{ src: 'plugin/math/math.js', async: true }
-	]
-});
-```
-
-You can add your own extensions using the same syntax. The following properties are available for each dependency object:
-- **src**: Path to the script to load
-- **async**: [optional] Flags if the script should load after reveal.js has started, defaults to false
-- **callback**: [optional] Function to execute when the script has loaded
-- **condition**: [optional] Function which must return true for the script to be loaded
-
-
-### Ready Event
-
-A 'ready' event is fired when reveal.js has loaded all non-async dependencies and is ready to start navigating. To check if reveal.js is already 'ready' you can call `Reveal.isReady()`.
-
-```javascript
-Reveal.addEventListener( 'ready', function( event ) {
-	// event.currentSlide, event.indexh, event.indexv
-} );
 ```
 
 
@@ -274,6 +225,53 @@ Reveal.initialize({
 	maxScale: 1.5
 
 });
+```
+
+
+### Dependencies
+
+Reveal.js doesn't _rely_ on any third party scripts to work but a few optional libraries are included by default. These libraries are loaded as dependencies in the order they appear, for example:
+
+```javascript
+Reveal.initialize({
+	dependencies: [
+		// Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+		{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+		// Interpret Markdown in <section> elements
+		{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+		{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+
+		// Syntax highlight for <code> elements
+		{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+		// Zoom in and out with Alt+click
+		{ src: 'plugin/zoom-js/zoom.js', async: true },
+
+		// Speaker notes
+		{ src: 'plugin/notes/notes.js', async: true },
+
+		// MathJax
+		{ src: 'plugin/math/math.js', async: true }
+	]
+});
+```
+
+You can add your own extensions using the same syntax. The following properties are available for each dependency object:
+- **src**: Path to the script to load
+- **async**: [optional] Flags if the script should load after reveal.js has started, defaults to false
+- **callback**: [optional] Function to execute when the script has loaded
+- **condition**: [optional] Function which must return true for the script to be loaded
+
+
+### Ready Event
+
+A 'ready' event is fired when reveal.js has loaded all non-async dependencies and is ready to start navigating. To check if reveal.js is already 'ready' you can call `Reveal.isReady()`.
+
+```javascript
+Reveal.addEventListener( 'ready', function( event ) {
+	// event.currentSlide, event.indexh, event.indexv
+} );
 ```
 
 
@@ -469,9 +467,9 @@ Reveal.initialize({
 	// Parallax background size
 	parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px" - currently only pixels are supported (don't use % or auto)
 
-	// Amount of pixels to move the parallax background per slide step,
-	// a value of 0 disables movement along the given axis
-	// These are optional, if they aren't specified they'll be calculated automatically
+	// Number of pixels to move the parallax background per slide
+	// - Calculated automatically unless specified
+	// - Set to 0 to disable movement along an axis
 	parallaxBackgroundHorizontal: 200,
 	parallaxBackgroundVertical: 50
 
@@ -514,9 +512,6 @@ You can also use different in and out transitions for the same slide:
     And it starts again.
 </section>
 ```
-
-
-Note that this does not work with the page and cube transitions.
 
 
 ### Internal links
@@ -595,15 +590,18 @@ Reveal.addEventListener( 'fragmenthidden', function( event ) {
 
 ### Code syntax highlighting
 
-By default, Reveal is configured with [highlight.js](http://softwaremaniacs.org/soft/highlight/en/) for code syntax highlighting. Below is an example with clojure code that will be syntax highlighted. When the `data-trim` attribute is present surrounding whitespace is automatically removed.
+<<<<<<< HEAD
+By default, Reveal is configured with [highlight.js](https://highlightjs.org/) for code syntax highlighting. Below is an example with clojure code that will be syntax highlighted. When the `data-trim` attribute is present surrounding whitespace is automatically removed.
+=======
+By default, Reveal is configured with [highlight.js](https://highlightjs.org/) for code syntax highlighting. Below is an example with clojure code that will be syntax highlighted. When the `data-trim` attribute is present, surrounding whitespace is automatically removed.  HTML will be escaped by default. To avoid this, for example if you are using `<mark>` to call out a line of code, add the `data-noescape` attribute to the `<code>` element.
 
 ```html
 <section>
-	<pre><code data-trim>
+	<pre><code data-trim data-noescape>
 (def lazy-fib
   (concat
    [0 1]
-   ((fn rfib [a b]
+   <mark>((fn rfib [a b]</mark>
         (lazy-cons (+ a b) (rfib b (+ a b)))) 0 1)))
 	</code></pre>
 </section>
@@ -617,11 +615,11 @@ If you would like to display the page number of the current slide you can do so 
 Reveal.configure({ slideNumber: true });
 
 // Slide number formatting can be configured using these variables:
-//  h: current slide's horizontal index
-//  v: current slide's vertical index
-//  c: current slide index (flattened)
-//  t: total number of slides (flattened)
-Reveal.configure({ slideNumber: 'c / t' });
+//  "h.v": 	horizontal . vertical slide number (default)
+//  "h/v": 	horizontal / vertical slide number
+//    "c": 	flattened slide number
+//  "c/t": 	flattened slide number / total slides
+Reveal.configure({ slideNumber: 'c/t' });
 
 ```
 
@@ -682,7 +680,7 @@ When reveal.js runs inside of an iframe it can optionally bubble all of its even
 ```javascript
 window.addEventListener( 'message', function( event ) {
 	var data = JSON.parse( event.data );
-	if( data.namespace === 'reveal' && data.eventName ='slidechanged' ) {
+	if( data.namespace === 'reveal' && data.eventName ==='slidechanged' ) {
 		// Slide changed, see data.state for slide number
 	}
 } );
@@ -713,9 +711,10 @@ Here's an example of an exported presentation that's been uploaded to SlideShare
 3. Change the **Destination** setting to **Save as PDF**.
 4. Change the **Layout** to **Landscape**.
 5. Change the **Margins** to **None**.
-6. Click **Save**.
+6. Enable the **Background graphics** option.
+7. Click **Save**.
 
-![Chrome Print Settings](https://s3.amazonaws.com/hakim-static/reveal-js/pdf-print-settings.png)
+![Chrome Print Settings](https://s3.amazonaws.com/hakim-static/reveal-js/pdf-print-settings-2.png)
 
 Alternatively you can use the [decktape](https://github.com/astefanutti/decktape) project.
 
@@ -1021,4 +1020,4 @@ Some reveal.js features, like external Markdown and speaker notes, require that 
 
 MIT licensed
 
-Copyright (C) 2015 Hakim El Hattab, http://hakim.se
+Copyright (C) 2016 Hakim El Hattab, http://hakim.se
