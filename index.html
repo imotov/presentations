@@ -9,8 +9,8 @@
 		<meta name="description" content="Presentation Decks">
 		<meta name="author" content="Igor Motov">
 
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
@@ -43,7 +43,8 @@
 				<section>
 					<h2>Presentations</h2>
                     <ul>
-                        <li><a href="what-s-new-in-elasticsearch-20.html">What's new in Elasticsearch 2.0</a> (Oct. 2015)</li>
+						<li><a href="what-s-new-in-elasticsearch-20.html">What's new in Elasticsearch 2.0</a> (Oct. 2015)</li>
+						<li><a href="ingestion.html">Ingesting data to Elasticsearch</a> (Jan. 2016)</li>
                     </ul>
 				</section>
 
@@ -71,7 +72,7 @@
 					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
 					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
 					{ src: 'plugin/zoom-js/zoom.js', async: true },
 					{ src: 'plugin/notes/notes.js', async: true }
 				]

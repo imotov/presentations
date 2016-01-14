@@ -55,8 +55,9 @@ section.has-dark-background {
   z-index: 31;
   font-size: 12px;
   left: 50%;
-  margin-left: 5px;
+  margin-left: -10px;
   color: black;
+  background: transparent;
 }
 
 
@@ -135,6 +136,17 @@ html.eslogo div.slide-background.present {
   background-size: auto 90%;
 }
 
+// remove border from plain images in markdown sections
+.reveal section p.plain img {
+  border: 0;
+  box-shadow: none;
+}
+
 // Theme template ------------------------------
 @import "../template/theme";
 // ---------------------------------------------
+
+.reveal img {
+  max-height: 95%;
+  max-width: 85%;
+}
