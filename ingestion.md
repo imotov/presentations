@@ -1,5 +1,6 @@
 <!-- .slide: data-background="images/esbackground.png" data-state="eslogo" -->
-# Ingesting data to Elasticsearch
+# Ingesting data
+#<!-- .element: class="fragment fade-out" data-fragment-index="1" --> to Elasticsearch
 
 [Igor Motov](https://github.com/imotov)/[@imotov](http://twitter.com/imotov)
 
