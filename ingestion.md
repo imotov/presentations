@@ -148,7 +148,10 @@ input {
 <!-- .element: class="fragment" data-fragment-index="1" -->produces objects like this:
 
 <pre class="fragment" data-fragment-index="1"><code class="ruby">{
-  message => "55.3.244.1 GET /index.html 15824 0.043"
+       "message" => "55.3.244.1 GET /index.html 15824 0.043",
+      "@version" => "1",
+    "@timestamp" => "2016-01-14T20:36:59.706Z",
+          "host" => "gejigeji.local" 
 }
 </code></pre>
 
@@ -212,19 +215,21 @@ IP (?:%{IPV6}|%{IPV4})
 Input:
 ```ruby
 {
-  message => "55.3.244.1 GET /index.html 15824 0.043"
+   "message" => "55.3.244.1 GET /index.html 15824 0.043"
+   ...
 }
 ```
 
 Output:
 ```ruby
 {
-  client => "55.3.244.1"
-  method => "GET"
-  request => "/index.html"
-  bytes => 15824
-  duration => 0.043
-  message => "55.3.244.1 GET /index.html 15824 0.043"
+  "message" => "55.3.244.1 GET /index.html 15824 0.043"
+  ...
+  "client" => "55.3.244.1"
+  "method" => "GET"
+  "request" => "/index.html"
+  "bytes" => "15824"
+  "duration" => "0.043"
 }
 ```
 
