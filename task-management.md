@@ -16,11 +16,11 @@
 
 * Any activity started by
   * a user through client or REST API
-    * Ex: node stats running on coordinating node 
+    * Ex: bulk request running on coordinating node 
   * other activity using Transport mechanism
-    * Ex: node stats running on all other nodes 
+    * Ex: shard level bulk request running on all other nodes 
   * an internal service using Transport mechanism 
-    * Ex: fault detection ping sent by a Zen Discovery Service
+    * Ex: peer recovery
 
 
 ## What's a task? (Low Level)
@@ -46,6 +46,8 @@ A special object that represents a currently processed Transport Action request.
 * Time when task started
 * Description (static)
 * Status (dynamic)
+* Cancelled flag (for cancellable tasks)
+* ... 
 
 
 ## Tasks Actions
